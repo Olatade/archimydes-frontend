@@ -4,7 +4,7 @@ export const profileSlice = createSlice({
   name: 'modals',
   initialState: {
     createUser: false,
-    updateUser: false
+    updateUser: true
   },
   reducers: {
     open:(state, modalName)=>{
@@ -19,6 +19,9 @@ export const profileSlice = createSlice({
           state.updateUser = true;
           state.createUser = false;
           break;
+        default:
+          state.updateUser = false;
+          state.createUser = false;
       }
     },
     close:(state, modalName)=>{
@@ -28,6 +31,6 @@ export const profileSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount, populateProfile } = profileSlice.actions
+export const { open, close } = profileSlice.actions
 
 export default profileSlice.reducer

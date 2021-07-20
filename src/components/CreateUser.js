@@ -55,7 +55,7 @@ const getClosest = function (elem, selector) {
 
 
 const CreateUser = () =>{
-  const {createUser} = useSelector(state => state.modals);
+  const {createUser} = useSelector(state => state.modal);
 
   return(
     <Modal isOpen={createUser} style={customStyles}>

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
 import {BiArrowBack} from 'react-icons/bi';
 import {MdClose} from 'react-icons/md';
+import {useSelector} from 'react-redux';
 
 
 const customStyles = {
@@ -54,8 +55,10 @@ const getClosest = function (elem, selector) {
 
 
 const UpdateUser = () =>{
+  const {UpdateUser} = useSelector(state => state.modal);
+
   return(
-    <Modal isOpen={false} style={customStyles}>
+    <Modal isOpen={UpdateUser} style={customStyles}>
 
     <Formik
       initialValues={{

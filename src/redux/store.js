@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import userReducer from './user';
+import modalReducer from './modals';
 
 export default configureStore({ 
   reducer: {
-    user: userReducer
+    modal: modalReducer
   } 
 });
