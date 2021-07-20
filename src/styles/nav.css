@@ -1,0 +1,7 @@
+.nav{
+  @apply flex bg-white h-14 items-center px-4
+  md:px-8
+}
+.nav__brand-name{
+  @apply font-bold text-xs md:text-lg
+}

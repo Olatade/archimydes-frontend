@@ -1,23 +1,18 @@
 import logo from './logo.svg';
-import './App.css';
+import './styles/nav.css';
+import UserTable from './components/UserTable'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="border border-red-600">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <div className="nav">
+        <p className="nav__brand-name" >Archimydes Challenge</p>
+      </div>
+
+      <div className="body pt-12">
+        <UserTable/>
+      </div>
     </div>
   );
 }
