@@ -53,7 +53,7 @@ const getClosest = function (elem, selector) {
 
 };
 
-
+Modal.setAppElement('#root');
 const UpdateUser = () =>{
   const {UpdateUser} = useSelector(state => state.modal);
 
