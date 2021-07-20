@@ -2,16 +2,15 @@ import logo from './logo.svg';
 import './styles/nav.css';
 import UserTable from './components/UserTable';
 import Modal from 'react-modal';
+import {Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from "yup";
+import {AiOutlineExclamationCircle} from 'react-icons/ai';
+import {BiArrowBack} from 'react-icons/bi';
+import {MdClose} from 'react-icons/md';
+import CreateUser from './components/CreateUser';
+import UpdateUser from './components/UpdateUser';
 
-const customStyles = {
-  content: {
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: '#f0f0f0'
-  },
-};
+
 
 function App() {
   return (
@@ -24,11 +23,8 @@ function App() {
       <div className="body pt-12">
         <UserTable/>
       </div>
-      <Modal isOpen={true} style={customStyles}>
-        <div>
-          the form goes here
-        </div>
-      </Modal>
+      <CreateUser/>
+      <UpdateUser/>
     </div>
   );
 }

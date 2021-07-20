@@ -24,3 +24,42 @@ code {
 .body{
   @apply px-16
 }
+
+/* FORM ERROR MESSAGE */
+
+.form-message{
+  @apply border border-red-500 rounded-lg bg-white p-4
+}
+
+.form-message.hide{
+  @apply hidden
+}
+
+.form-message__top{
+  @apply flex items-center justify-between 
+}
+
+.form-message__notification{
+@apply flex items-center 
+}
+
+.form-message__title{
+  @apply text-sm text-red-700 font-semibold
+  }
+
+.form-message__icon{
+  @apply mr-4
+}
+
+.form-message__close{
+  @apply justify-self-end cursor-pointer
+}
+
+.form-message__icon svg{
+  @apply text-lg
+}
+
+.form-message__message{
+  @apply text-xs pl-8 pt-2  text-gray-600
+}
+
