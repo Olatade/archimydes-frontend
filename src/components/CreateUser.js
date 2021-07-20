@@ -5,6 +5,8 @@ import {AiOutlineExclamationCircle} from 'react-icons/ai';
 import {BiArrowBack} from 'react-icons/bi';
 import {MdClose} from 'react-icons/md';
 import {useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import {close } from '../redux/modals';
 
 
 const customStyles = {
@@ -55,6 +57,7 @@ const getClosest = function (elem, selector) {
 
 
 const CreateUser = () =>{
+  const dispatch = useDispatch();
   const {createUser} = useSelector(state => state.modal);
 
   return(
@@ -79,7 +82,7 @@ const CreateUser = () =>{
       {({ values, errors, isSubmitting, isValidating }) => (
       <Form className=" border border-gray-200 rounded bg-white md:w-96 mx-auto mt-9 px-4 py-4">
         <div className="mb-4">
-          <h1 className="flex items-center text-primary font-semibold text-base md:text-xl" ><BiArrowBack/> <span className="pl-4">Create User</span></h1>
+          <h1 className="flex items-center text-primary font-semibold text-base md:text-xl cursor-pointer" onClick={() => dispatch(close('createUser'))} ><BiArrowBack/> <span className="pl-4">Create User</span></h1>
         </div>
         {/* Email */}
         <div className="grid gap-y-2">
@@ -129,7 +132,7 @@ const CreateUser = () =>{
         </div>
         
         <div className="flex flex-col mt-3">
-          <button id="login-submit" className="py-2 text-sm" type="submit">Cancel</button>
+          <button id="login-submit" className="py-2 text-sm" type="submit" onClick={() => dispatch(close('createUser'))}>Cancel</button>
           <button id="login-submit" className=" bg-green-800 text-white shadow-md text-sm py-2 rounded-md" type="submit">Create user</button>
         </div>
       </Form>)}

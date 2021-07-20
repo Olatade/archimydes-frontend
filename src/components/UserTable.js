@@ -1,12 +1,16 @@
 import {FiChevronDown, FiPlus} from 'react-icons/fi';
 import {BiTrashAlt} from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { open } from '../redux/modals';
+
 const UserTable = () =>{
+  const dispatch = useDispatch();
 
   return(
     <div>
       <div className="px-4 py-2 md:py-4 flex items-center justify-between ">
         <h1 className="text-lg md:text-2xl font-semibold">Users</h1>
-        <button className="flex items-center rounded text-white text-sm md:text-lg bg-green-400 hover:bg-green-300 py-2 px-4 "><span className="mt-1"><FiPlus/></span><span className="pl-1" >Create User</span> </button>
+        <button className="flex items-center rounded text-white text-sm md:text-lg bg-green-400 hover:bg-green-300 py-2 px-4" onClick={() => dispatch(open('createUser'))}><span className="mt-1"><FiPlus/></span><span className="pl-1" >Create User</span> </button>
       </div>
 
       <div className="px-3 py-2 md:py-4 flex justify-center">
@@ -30,7 +34,7 @@ const UserTable = () =>{
                   <button className="mt-1"><BiTrashAlt/></button>
                 </td>
             </tr>
-            
+
             <tr className="border-b cursor-pointer transition-all duration-300 hover:bg-gray-50 ">
                 <td className="p-3 px-5 text-xs md:text-sm font-bold">user name</td>
                 <td className="p-3 px-5 text-xs md:text-sm font-bold">user email</td>

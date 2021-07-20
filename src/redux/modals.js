@@ -7,8 +7,9 @@ export const profileSlice = createSlice({
     updateUser: true
   },
   reducers: {
-    open:(state, modalName)=>{
-      switch(modalName){
+    open:(state, action)=>{
+      console.log(action);
+      switch(action.payload){
         // hide the update user modal when the create user modal is open
         case 'createUser':
           state.createUser = true;
@@ -24,8 +25,8 @@ export const profileSlice = createSlice({
           state.createUser = false;
       }
     },
-    close:(state, modalName)=>{
-      state[modalName] = false;
+    close:(state, action)=>{
+      state[action.payload] = false;
     }
   },
 })
