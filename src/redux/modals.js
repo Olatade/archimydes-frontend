@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const profileSlice = createSlice({
+export const modalSlice = createSlice({
   name: 'modals',
   initialState: {
     createUser: false,
-    updateUser: true
+    updateUser: false,
+    updateState: {}
   },
   reducers: {
     open:(state, action)=>{
-      console.log(action);
       switch(action.payload){
         // hide the update user modal when the create user modal is open
         case 'createUser':
@@ -25,6 +25,9 @@ export const profileSlice = createSlice({
           state.createUser = false;
       }
     },
+    setUpdateState:(state, action) =>{
+      state.updateState = action.payload
+    },
     close:(state, action)=>{
       state[action.payload] = false;
     }
@@ -32,6 +35,6 @@ export const profileSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { open, close } = profileSlice.actions
+export const { open, close, setUpdateState } = modalSlice.actions
 
-export default profileSlice.reducer
+export default modalSlice.reducer

@@ -2,11 +2,17 @@ import {FiChevronDown, FiPlus} from 'react-icons/fi';
 import {BiTrashAlt} from 'react-icons/bi';
 import {useSelector} from 'react-redux';
 import { useDispatch } from 'react-redux';
-import {open} from '../redux/modals';
+import {open, setUpdateState} from '../redux/modals';
 
 const UserTable = () =>{
   const dispatch = useDispatch();
   const {users} = useSelector(state => state.users);
+
+  function handleUserClick(user){
+    dispatch(open('updateUser'));
+    dispatch(setUpdateState(user));
+  }
+
   return(
     <div>
       <div className="px-4 py-2 md:py-4 flex items-center justify-between ">
@@ -30,12 +36,12 @@ const UserTable = () =>{
 
             {
               users.map( (user, i) => (
-                <tr key={i} className="border-b cursor-pointer transition-all duration-300 hover:bg-gray-50 ">
+                <tr onClick={() => handleUserClick(user)}  key={i} className="border-b cursor-pointer transition-all duration-300 hover:bg-gray-50 ">
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.name}</td>
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.email}</td>
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.role}</td>
-                  <td className="p-3 px-5 flex items-center justify-start">
-                    <button className="mt-1"><BiTrashAlt/></button>
+                  <td className="p-1 px-5 flex items-center justify-start">
+                    <button className="mt-1 p-2 rounded-full hover:bg-gray-200"><BiTrashAlt/></button>
                   </td>
                 </tr>
               ))

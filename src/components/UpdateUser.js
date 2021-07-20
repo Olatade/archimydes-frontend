@@ -5,6 +5,8 @@ import {AiOutlineExclamationCircle} from 'react-icons/ai';
 import {BiArrowBack} from 'react-icons/bi';
 import {MdClose} from 'react-icons/md';
 import {useSelector} from 'react-redux';
+import { useDispatch } from 'react-redux';
+import {close } from '../redux/modals';
 
 
 const customStyles = {
@@ -54,17 +56,21 @@ const getClosest = function (elem, selector) {
 };
 
 Modal.setAppElement('#root');
-const UpdateUser = () =>{
-  const {UpdateUser} = useSelector(state => state.modal);
 
+
+const UpdateUser = () =>{
+  const dispatch = useDispatch();
+  // get the open state of the user update modal
+  // get the user state of the user update modal
+  const {updateUser, updateState} = useSelector(state => state.modal);
   return(
-    <Modal isOpen={UpdateUser} style={customStyles}>
+    <Modal isOpen={updateUser} style={customStyles}>
 
     <Formik
       initialValues={{
-        name: '',
-        email: '',
-        role: '',
+        name: updateState.name,
+        email: updateState.email,
+        role: updateState.role,
       }}
       validationSchema={Yup.object({
         name: Yup.string().required(`Required`),
@@ -79,7 +85,7 @@ const UpdateUser = () =>{
       {({ values, errors, isSubmitting, isValidating }) => (
       <Form className=" border border-gray-200 rounded bg-white md:w-96 mx-auto mt-9 px-4 py-4">
         <div className="mb-4">
-          <h1 className="flex items-center text-primary font-semibold text-base md:text-xl" ><BiArrowBack/> <span className="pl-4">Update User</span></h1>
+          <h1 className="flex items-center text-primary font-semibold text-base md:text-xl cursor-pointer" onClick={() => dispatch(close('updateUser'))}><BiArrowBack/> <span className="pl-4">Update User</span></h1>
         </div>
         {/* Email */}
         <div className="grid gap-y-2">
@@ -103,9 +109,12 @@ const UpdateUser = () =>{
             <div className="form-group">
               <label className="block mb-2 text-sm text-gray-600 font-bold" htmlFor="role">Role</label>
               <Field className="border w-full font-bold border-gray-300 placeholder-gray-300 focus:ring-indigo-500 focus:border-indigo-500 h-full pl-2 pr-12 pt-2 pb-2" name="role" as="select">
-              {/* {profile.sex ? <option value={profile.sex}>{profile.sex}</option> : <option value="">-</option>} */}
-            
-              {['Admin', 'User'].map( sex => ('seex' === 'sex' ? '' : <option value={sex} key={sex}>{sex}</option> ))}
+              {updateState.role ? <option value={updateState.role}>{updateState.role}</option> : <option value="">-</option>}
+
+              {['Admin', 'User'].map( role => (
+                // hide a role, if it is already in the select list
+                updateState.role === role ? '' : <option key={role} value={role}>{role}</option>
+              ))}
               </Field>
             </div>
             <ErrorMessage render={msg => <div className="text-red-700 text-xs mt-1">{msg}</div>} name="role" />
@@ -129,7 +138,7 @@ const UpdateUser = () =>{
         </div>
         
         <div className="flex flex-col mt-3">
-          <button id="login-submit" className="py-2 text-sm" type="submit">Cancel</button>
+          <button id="login-submit" className="py-2 text-sm" type="submit" onClick={() => dispatch(close('updateUser'))}>Cancel</button>
           <button id="login-submit" className=" bg-green-800 text-white shadow-md text-sm py-2 rounded-md" type="submit">Update User</button>
         </div>
       </Form>)}
