@@ -55,7 +55,7 @@ const getClosest = function (elem, selector) {
 
 };
 
-
+Modal.setAppElement('#root');
 const CreateUser = () =>{
   const dispatch = useDispatch();
   const {createUser} = useSelector(state => state.modal);
