@@ -2,7 +2,31 @@ import {FiChevronDown, FiPlus} from 'react-icons/fi';
 import {BiTrashAlt} from 'react-icons/bi';
 import {useSelector} from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import {open, setUpdateState} from '../redux/modals';
+import { populateUsers } from '../redux/users';
+
+async function getAllUsers(){
+  try{
+    const res = await fetch(`http://localhost:3003/users/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    const users = await res.json();
+    
+    // return courses array if the response status is true
+    // else throw an error
+    if(users?.status === true){
+      return users.data
+    }else{
+      return [];
+    } 
+  }catch(err){
+    return [];
+  }
+}
 
 const UserTable = () =>{
   const dispatch = useDispatch();
@@ -12,6 +36,16 @@ const UserTable = () =>{
     dispatch(open('updateUser'));
     dispatch(setUpdateState(user));
   }
+
+  // put the users in the table
+  useEffect(() => {
+    Promise.resolve(getAllUsers())
+    .then( result =>{
+      console.log(result)
+      dispatch(populateUsers(result));
+    })
+
+  }, []);
 
   return(
     <div>

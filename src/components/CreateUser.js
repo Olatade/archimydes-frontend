@@ -4,9 +4,9 @@ import * as Yup from "yup";
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
 import {BiArrowBack} from 'react-icons/bi';
 import {MdClose} from 'react-icons/md';
-import {useSelector} from 'react-redux';
-import { useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {close } from '../redux/modals';
+import { addUser } from '../redux/users';
 
 
 const customStyles = {
@@ -55,6 +55,28 @@ const getClosest = function (elem, selector) {
 
 };
 
+async function sendUser(user){
+  const res = await fetch(
+    `http://localhost:3003/users/`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }
+  );
+  try{
+    const text = JSON.parse(await res.text());
+    return text;
+  }
+  catch(e){
+    console.log(e)
+    return false
+  }
+
+}
+
 Modal.setAppElement('#root');
 const CreateUser = () =>{
   const dispatch = useDispatch();
@@ -76,7 +98,30 @@ const CreateUser = () =>{
       })}
     
     onSubmit={ async(values, functions) =>{
-      // do something on submit
+      // get the form message containers
+      const createMessage = document.getElementById('create-message');
+      const messageContainer = document.getElementById('create-message_message');
+
+      // send data to the api
+      Promise.resolve(sendUser(values))
+        .then( result => {
+          if (result.status === true && result.data){
+            // update the users table
+            // add the user to the table
+            dispatch(addUser(result.data));
+            //close the modal
+            dispatch(close('createUser'));
+
+          }else if(result.status === false && result.message){
+            // put the message inside the form error message
+            messageContainer.innerText = result.message
+            createMessage.classList.remove('hide');
+          }else{
+            createMessage.classList.remove('hide');
+          }
+        })
+
+      // on success add data to the taple
     }}
     >
       {({ values, errors, isSubmitting, isValidating }) => (
@@ -106,9 +151,8 @@ const CreateUser = () =>{
             <div className="form-group">
               <label className="block mb-2 text-sm text-gray-600 font-bold" htmlFor="role">Role</label>
               <Field className="border w-full font-bold border-gray-300 placeholder-gray-300 focus:ring-indigo-500 focus:border-indigo-500 h-full pl-2 pr-12 pt-2 pb-2" name="role" as="select">
-              {/* {profile.sex ? <option value={profile.sex}>{profile.sex}</option> : <option value="">-</option>} */}
-            
-              {['Admin', 'User'].map( sex => ('seex' === 'sex' ? '' : <option value={sex} key={sex}>{sex}</option> ))}
+              <option value="">-</option>
+              {['Admin', 'User'].map( role => <option value={role} key={role}>{role}</option> )}
               </Field>
             </div>
             <ErrorMessage render={msg => <div className="text-red-700 text-xs mt-1">{msg}</div>} name="role" />
@@ -116,7 +160,7 @@ const CreateUser = () =>{
       </div>
 
   
-        <div id="login-message" className="form-message mt-4 hide">
+        <div id="create-message" className="form-message mt-4 hide">
 
           <div className="form-message__top ">
             <div className="form-message__notification">
@@ -126,14 +170,14 @@ const CreateUser = () =>{
             <span onClick={(e) => hide(e)} className="form-message__close"><MdClose/></span>
           </div>
 
-          <div className="form-message__message">
-            User not found. <a href="https://alumni.abuad.edu.ng/signup">Click here</a> to signup or click "forgot your password" below to retrieve your password.
+          <div id="create-message_message" className="form-message__message">
+            Something went wrong. Please try again
           </div>
         </div>
         
-        <div className="flex flex-col mt-3">
-          <button id="login-submit" className="py-2 text-sm" type="submit" onClick={() => dispatch(close('createUser'))}>Cancel</button>
-          <button id="login-submit" className=" bg-green-800 text-white shadow-md text-sm py-2 rounded-md" type="submit">Create user</button>
+        <div className="flex flex-col mt-4 gap-y-3">
+          <button id="login-submit" className="py-2 text-sm hover:bg-gray-200" type="submit" onClick={() => dispatch(close('createUser'))}>Cancel</button>
+          <button id="login-submit" className=" bg-green-800 hover:bg-green-700 text-white shadow-md text-sm py-2 rounded-md" type="submit">Create user</button>
         </div>
       </Form>)}
     </Formik>
