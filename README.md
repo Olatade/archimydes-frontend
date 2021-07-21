@@ -1,35 +1,40 @@
-# How to install
+# Archimydes Challenge front-end react-js
+This is a solution to the front end (react js) challenge by Archimydes. 
 
-run npm install to instal dependencies
+## Before you install (get the server ready)
+- visit [Archimydes Challenge back-end](https://github.com/Olatade/archimydes-backend) for instructions
 
-## Available Scripts
+## Steps to install and run code
+- git clone https://github.com/Olatade/archimydes-frontend.git archimydes-frontend
+- cd archimydes-frontend
+- npm install
+  ( node v14.17.1 ) (npm 6.14.13)
+- npm run start
 
-In the project directory, you can run:
+## Api connection
+- All api routes are accessed via http://localhost:3003/users/
 
-### `npm start`
-
-Runs the app in the development mode.\
+## view on your browser
+`npm start` Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The page will reload if you make edits.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Note
+This project takes advantage of the following
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Formik](https://formik.org/) - For form state management and validation
+- [yup](https://www.npmjs.com/package/yup) - For form values validation
+- [tailwindcss](https://www.npmjs.com/package/yup) - A utility first css framework
+- [redux](https://redux.org) - For user interface state management
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Improvements
 
-## Learn More
-This project uses the following tools
-
-- Formik & Yup - for form control and form validation
-- TailwindCSS - A utility first css framework
-- redux - For UI state management
+Simple ways this project can be inproved are:
+- Adding animations to ease transitions between views
+- Some form of notification if an item cannot be deleted
+- Notification or propt when ther is no internet access
 
 
 
