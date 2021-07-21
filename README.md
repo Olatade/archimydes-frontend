@@ -32,6 +32,7 @@ This project takes advantage of the following
 ## Improvements
 
 Simple ways this project can be inproved are:
+- The API routes needs to put put in a config file instead of hard coding them into the fetch routes (this was partly overlooked because of the small number of fetch instructions)
 - Adding animations to ease transitions between views
 - Some form of notification if an item cannot be deleted
 - Notification or propt when ther is no internet access
