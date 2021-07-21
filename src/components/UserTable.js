@@ -1,10 +1,9 @@
 import {FiChevronDown, FiPlus} from 'react-icons/fi';
 import {BiTrashAlt} from 'react-icons/bi';
-import {useSelector} from 'react-redux';
-import { useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
 import {open, setUpdateState} from '../redux/modals';
-import { populateUsers } from '../redux/users';
+import { populateUsers, removeUser } from '../redux/users';
 
 async function getAllUsers(){
   try{
@@ -28,20 +27,55 @@ async function getAllUsers(){
   }
 }
 
+async function deleteUserData(id){
+  try{
+    const res = await fetch(`http://localhost:3003/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    const user = await res.json();
+    // return courses array if the response status is true
+    // else throw an error
+    if(user?.status === true){
+      return user
+    }else{
+      return [];
+    } 
+  }catch(err){
+    
+  }
+}
+
+
+
+
+
+
+
+
 const UserTable = () =>{
   const dispatch = useDispatch();
   const {users} = useSelector(state => state.users);
 
-  function handleUserClick(user){
-    dispatch(open('updateUser'));
-    dispatch(setUpdateState(user));
+  
+  function handleDeleteClick(user, e){
+    e.stopPropagation();
+    const result = deleteUserData(user['_id']);
+    dispatch(removeUser(user.email));
+  }
+
+
+  function handleUserClick(user, e){
+    dispatch(open('updateUser')); // open the update modal
+    dispatch(setUpdateState(user)); // populate the modal with selected user data
   }
 
   // put the users in the table
   useEffect(() => {
     Promise.resolve(getAllUsers())
     .then( result =>{
-      console.log(result)
       dispatch(populateUsers(result));
     })
 
@@ -70,12 +104,12 @@ const UserTable = () =>{
 
             {
               users.map( (user, i) => (
-                <tr onClick={() => handleUserClick(user)}  key={i} className="border-b cursor-pointer transition-all duration-300 hover:bg-gray-50 ">
+                <tr onClick={(e) => handleUserClick(user, e)}  key={i} className="border-b cursor-pointer transition-all duration-300 hover:bg-gray-50 ">
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.name}</td>
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.email}</td>
                   <td className="p-3 px-5 text-xs md:text-sm font-bold">{user.role}</td>
                   <td className="p-1 px-5 flex items-center justify-start">
-                    <button className="mt-1 p-2 rounded-full hover:bg-gray-200"><BiTrashAlt/></button>
+                    <button onClick={(e) => handleDeleteClick(user, e)} className="mt-1 p-2 rounded-full hover:bg-gray-200"><BiTrashAlt/></button>
                   </td>
                 </tr>
               ))

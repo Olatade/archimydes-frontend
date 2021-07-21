@@ -7,6 +7,7 @@ import {MdClose} from 'react-icons/md';
 import {useSelector} from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {close } from '../redux/modals';
+import { patchUser } from '../redux/users';
 
 
 const customStyles = {
@@ -55,19 +56,42 @@ const getClosest = function (elem, selector) {
 
 };
 
+async function sendUserUpdate(user){
+  const res = await fetch(
+    `http://localhost:3003/users/${user.id}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }
+  );
+  try{
+    const text = JSON.parse(await res.text());
+    return text;
+  }
+  catch(e){
+    console.log(e)
+    return false
+  }
+
+}
+
 Modal.setAppElement('#root');
 
 
 const UpdateUser = () =>{
   const dispatch = useDispatch();
-  // get the open state of the user update modal
-  // get the user state of the user update modal
+  // updateUser:  get the open state of the user update modal
+  // updateState the user in the update modal
   const {updateUser, updateState} = useSelector(state => state.modal);
   return(
     <Modal isOpen={updateUser} style={customStyles}>
 
     <Formik
       initialValues={{
+        id: updateState['_id'],
         name: updateState.name,
         email: updateState.email,
         role: updateState.role,
@@ -79,7 +103,30 @@ const UpdateUser = () =>{
       })}
     
     onSubmit={ async(values, functions) =>{
-      // do something on submit
+  
+      // get the update message containers
+      const updateMessage = document.getElementById('update-message');
+      const updateMessageContainer = document.getElementById('update-message_message');
+
+        // send update to the api
+        Promise.resolve(sendUserUpdate(values))
+        .then( result => {
+          if (result.status === true){
+            //send the user to update to the reducer
+            dispatch(patchUser(values));
+            //close the modal
+            dispatch(close('updateUser'));
+
+          }else if(result.status === false && result.message){
+            // put the message inside the form error message
+            updateMessageContainer.innerText = result.message
+            updateMessage.classList.remove('hide');
+          }else{
+            updateMessage.classList.remove('hide');
+          }
+        })
+
+
     }}
     >
       {({ values, errors, isSubmitting, isValidating }) => (
@@ -122,7 +169,7 @@ const UpdateUser = () =>{
       </div>
 
   
-        <div id="login-message" className="form-message mt-4 hide">
+        <div id="update-message" className="form-message mt-4 hide">
 
           <div className="form-message__top ">
             <div className="form-message__notification">
@@ -132,8 +179,8 @@ const UpdateUser = () =>{
             <span onClick={(e) => hide(e)} className="form-message__close"><MdClose/></span>
           </div>
 
-          <div className="form-message__message">
-            User not found. <a href="https://alumni.abuad.edu.ng/signup">Click here</a> to signup or click "forgot your password" below to retrieve your password.
+          <div id="update-message_message" className="form-message__message">
+            Something went wrong. Please try again
           </div>
         </div>
         
